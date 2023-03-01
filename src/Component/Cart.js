@@ -1,9 +1,15 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { minus, plus } from "../redux/Product/Actions";
 
 const Cart = () => {
-  const data = useSelector((state) => state.products);
-  const { cartProducts } = data;
+  const info = useSelector((state) => state.products);
+  const { cartProducts } = info;
+  const dispatch = useDispatch();
+  const plusHandler = (id) => {
+    dispatch(plus(id));
+  };
+
   return (
     <>
       <main className="py-16">
@@ -35,11 +41,18 @@ const Cart = () => {
                     <div className="flex items-center justify-center col-span-4 mt-4 space-x-8 md:mt-0">
                       {/* <!-- amount buttons --> */}
                       <div className="flex items-center space-x-4">
-                        <button className="lws-incrementQuantity">
+                        <button
+                          className="lws-incrementQuantity"
+                          disabled={data.quantity < 0 ? true : false}
+                          onClick={() => plusHandler(data.id)}
+                        >
                           <i className="text-lg fa-solid fa-plus"></i>
                         </button>
                         <span className="lws-cartQuantity">{data.qty}</span>
-                        <button className="lws-decrementQuantity">
+                        <button
+                          className="lws-decrementQuantity"
+                          onClick={() => minus(data.id)}
+                        >
                           <i className="text-lg fa-solid fa-minus"></i>
                         </button>
                       </div>

@@ -1,4 +1,4 @@
-import { ADD_CART, ADD_PRODUCT } from "./ActionTypes";
+import { ADD_CART, ADD_PRODUCT, MINUS, PLUS } from "./ActionTypes";
 
 export const add_product = (data) => {
   return {
@@ -16,4 +16,20 @@ export const add_to_cart = (id) => {
   };
 };
 
-export default add_product;
+export const plus = (id) => {
+  return {
+    type: PLUS,
+    payload: {
+      id,
+    },
+  };
+};
+
+export const minus = (id) => {
+  return {
+    type: MINUS,
+    payload: {
+      id,
+    },
+  };
+};
