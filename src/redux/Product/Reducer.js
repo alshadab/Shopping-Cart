@@ -22,7 +22,9 @@ const Reducer = (state = initialState, action) => {
         }
         return pd;
       });
-
+       const newValue = state.cartProducts.reduce((prev, next) => {
+        return prev + next.qty;
+      }, 1);
       return {
         ...state,
         products: newProducts,
@@ -40,6 +42,7 @@ const Reducer = (state = initialState, action) => {
               ...state.cartProducts,
               { ...item, qty: 1, quantity: parseInt(item.quantity) - 1 },
             ],
+        totalValue: newValue,
       };
 
     default:
