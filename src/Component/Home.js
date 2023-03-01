@@ -8,6 +8,7 @@ import ProductItem from "./ProductItem";
 const Home = ({ status }) => {
   const data = useSelector((state) => state.products);
   const { products } = data;
+
   if (status) {
     return (
       <div>

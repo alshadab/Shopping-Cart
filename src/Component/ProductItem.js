@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { add_to_cart } from "../redux/Product/Actions";
 
@@ -8,7 +8,10 @@ const ProductItem = ({ data }) => {
   const addToCart = (data) => {
     dispatch(add_to_cart(data));
   };
-
+  const [status, setStatus] = useState(false);
+  useEffect(() => {
+    data.quantity < 1 ? setStatus(true) : setStatus(false);
+  });
   return (
     <div className="lws-productCard" key={data.id}>
       <img className="lws-productImage" src={data.imgUrl} alt="product" />
@@ -23,7 +26,11 @@ const ProductItem = ({ data }) => {
             QTY <span className="lws-quantity">{data.quantity}</span>
           </p>
         </div>
-        <button className="lws-btnAddToCart" onClick={() => addToCart(data.id)}>
+        <button
+          className="lws-btnAddToCart"
+          disabled={status}
+          onClick={() => addToCart(data.id)}
+        >
           Add To Cart
         </button>
       </div>
