@@ -71,17 +71,18 @@ const Reducer = (state = initialState, action) => {
         ...state,
         products: minus_newProducts,
 
-        cartProducts: minus_check
-          ? state.cartProducts.map((itm) =>
-              itm.id === action.payload.id
-                ? {
-                    ...itm,
-                    qty: itm.qty - 1,
-                    quantity: Number(itm.quantity) + 1,
-                  }
-                : itm
-            )
-          : console.log("Item not found"),
+        cartProducts:
+          minus_check &&
+          state.cartProducts.map((itm) =>
+            itm.id === action.payload.id
+              ? {
+                  ...itm,
+                  qty: itm.qty - 1,
+                  quantity: Number(itm.quantity) + 1,
+                }
+              : itm
+          ),
+
         totalValue: minus_newValue,
       };
 
