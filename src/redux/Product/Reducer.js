@@ -31,13 +31,13 @@ const Reducer = (state = initialState, action) => {
               ? {
                   ...itm,
                   qty: itm.qty + 1,
-                  quantity: parseInt(itm.quantity) - 1,
+                  quantity: Number(itm.quantity) - 1,
                 }
               : itm
           )
         : [
             ...state.cartProducts,
-            { ...item, qty: 1, quantity: parseInt(item.quantity) - 1 },
+            { ...item, qty: 1, quantity: Number(item.quantity) - 1 },
           ],
       totalValue: newValue,
     };
@@ -77,7 +77,7 @@ const Reducer = (state = initialState, action) => {
                 ? {
                     ...itm,
                     qty: itm.qty - 1,
-                    quantity: parseInt(itm.quantity) + 1,
+                    quantity: Number(itm.quantity) + 1,
                   }
                 : itm
             )
@@ -88,9 +88,6 @@ const Reducer = (state = initialState, action) => {
     case DELETE:
       const filterProducts = state.cartProducts.filter(
         (p_data) => p_data.id !== action.payload.id
-      );
-      const del_check = state.cartProducts.find((pr) =>
-        pr.id === action.payload.id ? true : false
       );
 
       const del_newProducts = state.products.map((pd) => {
