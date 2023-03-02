@@ -1,4 +1,4 @@
-import { ADD_CART, ADD_PRODUCT, PLUS } from "./ActionTypes";
+import { ADD_CART, ADD_PRODUCT, DELETE, MINUS, PLUS } from "./ActionTypes";
 import initialState from "./initialState";
 
 const Reducer = (state = initialState, action) => {
@@ -51,6 +51,65 @@ const Reducer = (state = initialState, action) => {
 
     case PLUS:
       return add(action.payload.id);
+    case MINUS:
+      //Check if the product in cart is already
+      const minus_check = state.cartProducts.find((pr) =>
+        pr.id === action.payload.id ? true : false
+      );
+
+      const minus_newProducts = state.products.map((pd) => {
+        if (pd.id === action.payload.id) {
+          pd.quantity = pd.quantity + 1;
+          return pd;
+        }
+        return pd;
+      });
+      const minus_newValue = state.cartProducts.reduce((prev, next) => {
+        return prev + next.qty;
+      }, -1);
+      return {
+        ...state,
+        products: minus_newProducts,
+
+        cartProducts: minus_check
+          ? state.cartProducts.map((itm) =>
+              itm.id === action.payload.id
+                ? {
+                    ...itm,
+                    qty: itm.qty - 1,
+                    quantity: parseInt(itm.quantity) + 1,
+                  }
+                : itm
+            )
+          : console.log("Item not found"),
+        totalValue: minus_newValue,
+      };
+
+    case DELETE:
+      const filterProducts = state.cartProducts.filter(
+        (p_data) => p_data.id !== action.payload.id
+      );
+      const del_check = state.cartProducts.find((pr) =>
+        pr.id === action.payload.id ? true : false
+      );
+
+      const del_newProducts = state.products.map((pd) => {
+        if (pd.id === action.payload.id) {
+          pd.quantity = pd.quantity + action.payload.value;
+          return pd;
+        }
+        return pd;
+      });
+      const del_newValue = filterProducts.reduce((prev, next) => {
+        return prev + next.qty;
+      }, 0);
+      return {
+        ...state,
+        products: del_newProducts,
+        cartProducts: filterProducts,
+
+        totalValue: del_newValue,
+      };
 
     default:
       return state;

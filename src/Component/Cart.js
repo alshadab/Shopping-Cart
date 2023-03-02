@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { minus, plus } from "../redux/Product/Actions";
+import { del, minus, plus } from "../redux/Product/Actions";
 
 const Cart = () => {
   const info = useSelector((state) => state.products);
@@ -9,7 +9,15 @@ const Cart = () => {
   const plusHandler = (id) => {
     dispatch(plus(id));
   };
-
+  const minusHandler = (id) => {
+    dispatch(minus(id));
+  };
+  const deleteHandler = (id, value) => {
+    dispatch(del(id, value));
+  };
+  const totalPrice = cartProducts.reduce((prev, next) => {
+    return prev + next.qty * next.price;
+  }, 0);
   return (
     <>
       <main className="py-16">
@@ -51,7 +59,8 @@ const Cart = () => {
                         <span className="lws-cartQuantity">{data.qty}</span>
                         <button
                           className="lws-decrementQuantity"
-                          onClick={() => minus(data.id)}
+                          disabled={data.qty < 2 ? true : false}
+                          onClick={() => minusHandler(data.id)}
                         >
                           <i className="text-lg fa-solid fa-minus"></i>
                         </button>
@@ -60,13 +69,16 @@ const Cart = () => {
                       <p className="text-lg font-bold">
                         BDT{" "}
                         <span className="lws-calculatedPrice">
-                          {data.price}
+                          {data.price * data.qty}
                         </span>
                       </p>
                     </div>
                     {/* <!-- delete button --> */}
                     <div className="flex items-center justify-center col-span-2 mt-4 md:justify-end md:mt-0">
-                      <button className="lws-removeFromCart">
+                      <button
+                        className="lws-removeFromCart"
+                        onClick={() => deleteHandler(data.id, data.qty)}
+                      >
                         <i className="text-lg text-red-400 fa-solid fa-trash"></i>
                       </button>
                     </div>
@@ -87,7 +99,7 @@ const Cart = () => {
                   <div className="flex items-center justify-between">
                     <p>Sub Total</p>
                     <p>
-                      BDT <span className="lws-subtotal">8800</span>
+                      BDT <span className="lws-subtotal">{totalPrice}</span>
                     </p>
                   </div>
                   {/* <!-- Discount --> */}
@@ -108,7 +120,7 @@ const Cart = () => {
                   <div className="flex items-center justify-between pb-4">
                     <p className="font-bold">TOTAL</p>
                     <p className="font-bold">
-                      BDT <span className="lws-total">8800</span>
+                      BDT <span className="lws-total">{totalPrice}</span>
                     </p>
                   </div>
                   <button className="placeOrderbtn">place order</button>

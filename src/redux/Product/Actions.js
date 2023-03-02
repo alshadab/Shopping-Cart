@@ -1,4 +1,4 @@
-import { ADD_CART, ADD_PRODUCT, MINUS, PLUS } from "./ActionTypes";
+import { ADD_CART, ADD_PRODUCT, DELETE, MINUS, PLUS } from "./ActionTypes";
 
 export const add_product = (data) => {
   return {
@@ -30,6 +30,16 @@ export const minus = (id) => {
     type: MINUS,
     payload: {
       id,
+    },
+  };
+};
+
+export const del = (id, value) => {
+  return {
+    type: DELETE,
+    payload: {
+      id,
+      value,
     },
   };
 };
