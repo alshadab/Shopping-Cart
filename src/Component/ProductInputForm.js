@@ -28,8 +28,8 @@ const ProductInputForm = () => {
       pname: "",
       category: "",
       imgUrl: "",
-      price: 0,
-      quantity: 0,
+      price: "",
+      quantity: "",
     });
   };
 
